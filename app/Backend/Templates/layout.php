@@ -1,0 +1,1 @@
+<?php require dirname(__DIR__, 2) . '/Frontend/Templates/layout.php';
