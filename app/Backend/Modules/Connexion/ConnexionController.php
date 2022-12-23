@@ -24,7 +24,10 @@ class ConnexionController extends Controller
 
     public function executeLogout(HTTPRequest $request)
     {
-        $this->app->user()->setAuthenticated(false);
-        $this->app->httpResponse()->redirect('/');
+        if($this->app->user()->isAuthenticated()){
+            $this->app->user()->setAuthenticated(false);
+            $this->app->httpResponse()->redirect('/');
+        }
+        $this->app->httpResponse()->redirect('.');
     }
 }

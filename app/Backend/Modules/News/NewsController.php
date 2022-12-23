@@ -90,7 +90,7 @@ class NewsController extends Controller
     {
         $this->managers->getManagerOf('News')->delete($request->getData('id'));
 
-        $this->app->user()->setFlash('La news a bien été supprimées');
+        $this->app->user()->setFlash('La news a bien été supprimée');
         $this->app->httpResponse()->redirect('/admin');
     }
 
@@ -98,7 +98,7 @@ class NewsController extends Controller
     {
         $this->managers->getManagerOf('Comments')->delete($request->getData('id'));
 
-        $this->app->user()->setFlash('Le commentaire a bien été supprimées');
+        $this->app->user()->setFlash('Le commentaire a bien été supprimé');
         $this->app->httpResponse()->redirect('/admin');
     }
 }
