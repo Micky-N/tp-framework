@@ -20,7 +20,7 @@ class NewsManagerPDO extends NewsManager
         if ($listNews) {
             return array_map(fn($news) => new News($news), $listNews);
         }
-        return false;
+        return [];
     }
 
     public function getUnique($id): Entity|false

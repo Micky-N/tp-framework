@@ -27,7 +27,7 @@ class CommentsManagerPDO extends CommentsManager
         if ($comments = $q->fetchAll()) {
             return array_map(fn($comment) => new Comment($comment), $comments);
         }
-        return false;
+        return [];
     }
 
     public function get(int $id): Comment|false
