@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
 <routes>
-    <route url="/" module="News" action="index"/>
-    <route url="/news-([0-9]+)\.html" module="News" action="show" vars="id"/>
-    <route url="/commenter-([0-9]+)\.html" module="News" action="insertComment" vars="news"/>
+    <route url="/" module="Article" action="index"/>
+    <route url="/article-([0-9]+)\.html" module="Article" action="show" vars="id"/>
+    <route url="/register\.html" module="Customer" action="register"/>
+    <route url="/login\.html" module="Customer" action="index"/>
+    <route url="/logout\.html" module="Customer" action="logout"/>
+    <route url="/forgot-password\.html" module="Customer" action="forgotPassword"/>
 </routes>

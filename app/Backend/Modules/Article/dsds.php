@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Backend\Modules\News;
+namespace App\Backend\Modules\Article;
 
 use Library\Abstracts\Controller;
 use Library\Entities\Comment;
@@ -10,14 +10,14 @@ use Library\FormBuilders\NewsFormBuilder;
 use Library\FormHandler;
 use Library\HTTPRequest;
 
-class NewsController extends Controller
+class ArticleController extends Controller
 {
     public function executeIndex(HTTPRequest $request)
     {
         $this->page->addVar('title', 'Gestion des news');
-        $manager = $this->managers->getManagerOf('News');
-        $this->page->addVar('listeNews', $manager->getList());
-        $this->page->addVar('nombreNews', $manager->count());
+        $manager = $this->managers->getManagerOf('Article');
+        $this->page->addVar('listNews', $manager->getList());
+        $this->page->addVar('numberNews', $manager->count());
     }
 
     public function executeInsert(HTTPRequest $request)
@@ -36,9 +36,9 @@ class NewsController extends Controller
     {
         if ($request->method() == 'POST') {
             $news = new News([
-                'auteur' => $request->postData('auteur'),
-                'titre' => $request->postData('titre'),
-                'contenu' => $request->postData('contenu')
+                'author' => $request->postData('author'),
+                'title' => $request->postData('title'),
+                'content' => $request->postData('content')
             ]);
             if ($request->getExists('id')) {
                 $news->setId($request->getData('id'));
@@ -46,7 +46,7 @@ class NewsController extends Controller
         } else {
             // L'identifiant de la news est transmis si on veut la modifier .
             if ($request->getExists('id')) {
-                $news = $this->managers->getManagerOf('News')->getUnique($request->getData('id'));
+                $news = $this->managers->getManagerOf('Article')->getUnique($request->getData('id'));
             } else {
                 $news = new News;
             }
@@ -54,7 +54,7 @@ class NewsController extends Controller
         $formBuilder = new NewsFormBuilder($news);
         $formBuilder->build();
         $form = $formBuilder->form();
-        $formHandler = new FormHandler($form, $this->managers->getManagerOf('News'), $request);
+        $formHandler = new FormHandler($form, $this->managers->getManagerOf('Article'), $request);
         if ($formHandler->process()) {
             $this->app->user()->setFlash($news->isNew() ? 'La news a bien été ajoutée !' : 'La news a bien été modifiée !');
             $this->app->httpResponse()->redirect('/admin');
@@ -68,8 +68,8 @@ class NewsController extends Controller
         if ($request->method() == 'POST') {
             $comment = new Comment([
                 'id' => $request->getData('id'),
-                'auteur' => $request->postData('auteur'),
-                'contenu' => $request->postData('contenu')
+                'author' => $request->postData('author'),
+                'content' => $request->postData('content')
             ]);
         } else {
             $comment = $this->managers->getManagerOf('Comments')->get($request->getData('id'));
@@ -88,7 +88,7 @@ class NewsController extends Controller
 
     public function executeDelete(HTTPRequest $request)
     {
-        $this->managers->getManagerOf('News')->delete($request->getData('id'));
+        $this->managers->getManagerOf('Article')->delete($request->getData('id'));
 
         $this->app->user()->setFlash('La news a bien été supprimée');
         $this->app->httpResponse()->redirect('/admin');

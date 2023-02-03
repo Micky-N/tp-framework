@@ -5,9 +5,9 @@ namespace Library\Models;
 use Library\Abstracts\Manager;
 use Library\Entities\News;
 
-abstract class NewsManager extends Manager
+abstract class ArticleManager extends Manager
 {
-    abstract public function getList($debut = -1, $limite = -1): array|false;
+    abstract public function getList($debut = -1, $limit = -1): array;
 
     /**
      * Méthode renvoyant le nombre de news total.

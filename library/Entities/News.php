@@ -3,91 +3,102 @@
 namespace Library\Entities;
 
 use DateTime;
+use Exception;
 use Library\Abstracts\Entity;
 
 class News extends Entity
 {
-    const AUTEUR_INVALIDE = 1;
-    const TITRE_INVALIDE = 2;
-    const CONTENU_INVALIDE = 3;
-    protected string $auteur;
-    protected string $titre;
-    protected string $contenu;
-    protected DateTime $dateAjout;
-    protected DateTime $dateModif;
+    const INVALID_AUTHOR = 1;
+    const INVALID_TITLE = 2;
+    const INVALID_CONTENT = 3;
+    protected string $author;
+    protected string $title;
+    protected string $content;
+    protected ?DateTime $createdAt = null;
+    protected ?DateTime $updatedAt = null;
 
     public function isValid(): bool
     {
-        return !(empty($this->auteur) || empty($this->titre) || empty($this->contenu));
+        return !(empty($this->author) || empty($this->title) || empty($this->content));
     }
 
     // SETTERS //
-    public function setAuteur(string $auteur): void
+    public function setAuthor(string $author): void
     {
-        if (empty($auteur)) {
-            $this->erreurs[] = self::AUTEUR_INVALIDE;
+        if (empty($author)) {
+            $this->errors[] = self::INVALID_AUTHOR;
         } else {
-            $this->auteur = $auteur;
+            $this->author = $author;
         }
     }
 
-    public function setTitre(string $titre): void
+    public function setTitle(string $title): void
     {
-        if (empty($titre)) {
-            $this->erreurs[] = self::TITRE_INVALIDE;
+        if (empty($title)) {
+            $this->errors[] = self::INVALID_TITLE;
         } else {
-            $this->titre = $titre;
+            $this->title = $title;
         }
     }
 
-    public function setContenu(string $contenu): void
+    public function setContent(string $content): void
     {
-        if (empty($contenu)) {
-            $this->erreurs[] = self::CONTENU_INVALIDE;
+        if (empty($content)) {
+            $this->errors[] = self::INVALID_CONTENT;
         } else {
-            $this->contenu = $contenu;
+            $this->content = $content;
         }
     }
 
-    public function setDateAjout(string|DateTime $dateAjout)
+    /**
+     * @param string|DateTime $created_at
+     * @return void
+     * @throws Exception
+     */
+    public function setCreatedAt(string|DateTime $created_at): void
     {
-        if(is_string($dateAjout)){
-            $dateAjout = new DateTime($dateAjout);
+        if(is_string($created_at)){
+            $created_at = new DateTime($created_at);
         }
-        $this->dateAjout = $dateAjout;
+        $this->createdAt = $created_at;
     }
 
-    public function setDateModif(string|DateTime $dateModif)
+    /**
+     * @param string|DateTime $updated_at
+     * @return void
+     * @throws Exception
+     */
+    public function setUpdatedAt(string|DateTime $updated_at): void
     {
-        if(is_string($dateModif)){
-            $dateModif = new DateTime($dateModif);
+        if(is_string($updated_at)){
+            $updated_at = new DateTime($updated_at);
         }
-        $this->dateModif = $dateModif;
+        $this->updatedAt = $updated_at;
     }
 
     // GETTERS //
-    public function auteur(): string
+    public function author(): string
     {
-        return $this->auteur ?? '';
+        return $this->author ?? '';
     }
 
-    public function titre(): string
+    public function title(): string
     {
-        return $this->titre ?? '';
+        return $this->title ?? '';
     }
 
-    public function contenu(): string
+    public function content(): string
     {
-        return $this->contenu ?? '';
+        return $this->content ?? '';
     }
 
-    public function dateAjout(): DateTime
+    public function createdAt(): DateTime
     {
-        return $this->dateAjout;
+        return $this->createdAt;
     }
 
-    public function dateModif(): DateTime
+    public function updatedAt(): DateTime
     {
-        return $this->dateModif;
+        return $this->updatedAt;
     }
 }

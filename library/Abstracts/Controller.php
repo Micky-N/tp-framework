@@ -16,7 +16,7 @@ abstract class Controller extends ApplicationComponent
     protected string $view = '';
     protected Managers $managers;
 
-    public function __construct(Application $app, $module, $action)
+    public function __construct(Application $app, string $module, string $action)
     {
         parent::__construct($app);
         $this->managers = new Managers('PDO', PDOFactory::getMysqlConnexion());
@@ -63,5 +63,12 @@ abstract class Controller extends ApplicationComponent
     public function page(): ?Page
     {
         return $this->page;
+    }
+
+    protected function can(array $cans){
+        if(isset($cans[$this->action]) && $cans[$this->action] === false){
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            exit;
+        }
     }
 }

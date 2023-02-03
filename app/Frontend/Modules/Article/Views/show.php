@@ -1,10 +1,10 @@
-<p>Par <em><?= $news['auteur']; ?></em>, le <?= $news['dateAjout']->format('d/m/Y à H\hi'); ?></p>
-<h2><?= $news['titre']; ?></h2>
-<p><?= nl2br($news['contenu']); ?></p>
-<?php if ($news['dateAjout'] != $news['dateModif']): ?>
+<p>Par <em><?= $news['author']; ?></em>, le <?= $news['createdAt']->format('d/m/Y à H\hi'); ?></p>
+<h2><?= $news['title']; ?></h2>
+<p><?= nl2br($news['content']); ?></p>
+<?php if ($news['createdAt'] != $news['updatedAt']): ?>
     <p style="text-align: right;">
         <small>
-            <em>Modifiée le <?= $news['dateModif']->format('d/m/Y à H\hi'); ?></em>
+            <em>Modifiée le <?= $news['updatedAt']->format('d/m/Y à H\hi'); ?></em>
         </small>
     </p>
 <?php endif ?>
@@ -15,14 +15,14 @@
     <?php foreach ($comments as $comment): ?>
         <fieldset>
             <legend>
-                Posté par <strong><?= htmlspecialchars($comment['auteur']); ?></strong>
-                le <?= $comment['date']->format('d/m/Y à H\hi'); ?>
+                Posté par <strong><?= htmlspecialchars($comment['author']); ?></strong>
+                le <?= $comment['createdAt']->format('d/m/Y à H\hi'); ?>
                 <?php if ($user->isAuthenticated()): ?>
                     - <a href="admin/comment-update-<?= $comment['id']; ?>.html">Modifier</a> |
                     <a href="admin/comment-delete-<?= $comment['id']; ?>.html">Supprimer</a>
                 <?php endif; ?>
             </legend>
-            <p><?= nl2br(htmlspecialchars($comment['contenu'])); ?></p>
+            <p><?= nl2br(htmlspecialchars($comment['content'])); ?></p>
         </fieldset>
     <?php endforeach; ?>
 <?php endif; ?>

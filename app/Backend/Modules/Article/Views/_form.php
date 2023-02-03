@@ -1,20 +1,20 @@
 <form action="" method="post">
-    <?php if (isset($erreurs) && in_array(\Library\Entities\News::AUTEUR_INVALIDE, $erreurs)): ?>
+    <?php if (isset($errors) && in_array(\Library\Entities\News::INVALID_AUTHOR, $errors)): ?>
         <p>L'auteur est invalide.</p>
     <?php endif; ?>
     <label>Auteur</label>
-    <input type="text" name="auteur" value="<?= $news['auteur'] ?? '' ?>"/><br/>
-    <?php if (isset($erreurs) && in_array(\Library\Entities\News::TITRE_INVALIDE, $erreurs)): ?>
+    <input type="text" name="author" value="<?= $news['author'] ?? '' ?>"/><br/>
+    <?php if (isset($errors) && in_array(\Library\Entities\News::INVALID_TITLE, $errors)): ?>
         <p>Le titre est invalide.</p>
     <?php endif; ?>
     <label>Titre</label>
-    <input type="text" name="titre" value="<?= $news['titre'] ?? '' ?>"/>
+    <input type="text" name="title" value="<?= $news['title'] ?? '' ?>"/>
     <br/>
-    <?php if (isset($erreurs) && in_array(\Library\Entities\News::CONTENU_INVALIDE, $erreurs)): ?>
+    <?php if (isset($errors) && in_array(\Library\Entities\News::INVALID_CONTENT, $errors)): ?>
         <p>Le contenu est invalide.</p>
     <?php endif; ?>
     <label>Contenu</label>
-    <textarea rows="8" cols="60" name="contenu"><?= $news['contenu'] ?? '' ?></textarea><br/>
+    <textarea rows="8" cols="60" name="content"><?= $news['content'] ?? '' ?></textarea><br/>
     <?php if (isset($news) && !$news->isNew()): ?>
         <input type="hidden" name="id" value="<?= $news['id']; ?>"/>
         <input type="submit" value="Modifier" name="modifier"/>

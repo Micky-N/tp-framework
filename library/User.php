@@ -3,47 +3,68 @@
 namespace Library;
 
 namespace Library;
-session_start();
+
+
+use Library\Abstracts\Entity;
 
 class User extends ApplicationComponent
 {
+    public function __construct(protected readonly Application $app)
+    {
+        if(session_status() === PHP_SESSION_NONE || session_status() !== PHP_SESSION_ACTIVE){
+            session_start();
+        }
+    }
+
     public function getAttribute($attr)
     {
         return $_SESSION[$attr] ?? null;
     }
 
-    public function getFlash()
+    public function getFlash(string $name)
     {
-        $flash = $_SESSION['flash'];
-        unset($_SESSION['flash']);
+        $flashes = $_SESSION['flash'];
+        $flash = $flashes[$name];
+        unset($flashes[$name]);
+        $_SESSION['flash'] = $flashes;
         return $flash;
     }
 
-    public function hasFlash(): bool
+    public function hasFlash(string $name): bool
     {
-        return isset($_SESSION['flash']);
+        return isset($_SESSION['flash'][$name]);
     }
 
     public function isAuthenticated(): bool
     {
-        return isset($_SESSION['auth']) && $_SESSION['auth'] === true;
+        return isset($_SESSION['auth']) && $_SESSION['auth'] !== false;
     }
 
-    public function setAttribute($attr, $value)
+    public function setAttribute(string $attr, mixed $value)
     {
         $_SESSION[$attr] = $value;
     }
 
-    public function setAuthenticated($authenticated = true)
+    public function setAuthenticated(int|bool $authenticated, string $type = '')
     {
-        if (!is_bool($authenticated)) {
-            throw new \InvalidArgumentException('La valeur spécifiée à la méthode User::setAuthenticated() doit être un boolean');
-        }
         $_SESSION['auth'] = $authenticated;
+        if($authenticated){
+            $_SESSION['type'] = $type;
+        }else{
+            unset($_SESSION['type']);
+        }
     }
 
-    public function setFlash($value)
+    public function setFlash(string $name, mixed $value)
     {
-        $_SESSION['flash'] = $value;
+        if(empty($_SESSION['flash'])){
+            $_SESSION['flash'] = [];
+        }
+        $_SESSION['flash'][$name] = $value;
+    }
+
+    public function getAuthenticate(): array
+    {
+        return ['auth' => $_SESSION['auth'], 'type' => $_SESSION['type']];
     }
 }

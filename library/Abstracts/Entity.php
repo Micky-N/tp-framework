@@ -6,7 +6,7 @@ use ArrayAccess;
 
 abstract class Entity implements ArrayAccess
 {
-    protected array $erreurs = [];
+    protected array $errors = [];
     protected int $id;
 
     public function __construct(array $donnees = [])
@@ -16,12 +16,12 @@ abstract class Entity implements ArrayAccess
         }
     }
 
-    public function hydrate(array $donnees)
+    public function hydrate(array $data)
     {
-        foreach ($donnees as $attribut => $valeur) {
-            $methode = 'set' . ucfirst($attribut);
+        foreach ($data as $name => $value) {
+            $methode = 'set' . $this->snakeToPascalCase($name);
             if (is_callable(array($this, $methode))) {
-                $this->$methode($valeur);
+                $this->$methode($value);
             }
         }
     }
@@ -31,9 +31,9 @@ abstract class Entity implements ArrayAccess
         return empty($this->id);
     }
 
-    public function erreurs(): array
+    public function errors(): array
     {
-        return $this->erreurs;
+        return $this->errors;
     }
 
     public function id(): int
@@ -70,5 +70,10 @@ abstract class Entity implements ArrayAccess
     public function offsetUnset(mixed $var): void
     {
         throw new \Exception('Impossible de supprimer une quelconque valeur');
+    }
+
+    private function snakeToPascalCase(string $word): string
+    {
+        return str_replace('_', '', ucwords($word, '_'));
     }
 }
